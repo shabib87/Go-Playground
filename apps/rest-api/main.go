@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Go-Playground/handlers"
+	"Go-Playground/apps/rest-api/handlers"
 	"context"
 	"log"
 	"net/http"
