@@ -1,33 +1,23 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	"Go-Playground/handlers"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/shabib87/Go-Playground/handlers"
 )
 
 func main() {
-
-	http.HandleFunc("/goodbye", func(http.ResponseWriter, *http.Request) {
-		log.Println("Goodbye World!")
-	})
-
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		log.Println("Hello World!")
-
-		body, error := ioutil.ReadAll(r.Body)
-		if error != nil {
-			log.Println("Error reading body ", error)
-			http.Error(rw, "OOps!", http.StatusBadRequest)
-			return
-		}
-
-		fmt.Fprintf(rw, "Hello %s\n", body)
-	})
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	hh := handlers.NewHello(l)
+	
+	sm := http.NewServeMux()
+	sm.Handle("/", hh)
 
 	log.Println("Starting Server")
-	error := http.ListenAndServe(":9090", nil)
+	error := http.ListenAndServe(":9090", sm)
 	if error != nil {
 		log.Fatal(error)
 	}
